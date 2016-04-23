@@ -20,7 +20,9 @@ class untappd(object):
         return json.loads(d.content)
 
 
-    def search(self, type, id):
-        d = requests.get('{}/search/{}/?q={}&client_id={}&client_secret={}'
-                         .format(URL, type, id, self.key, self.secret))
+    def search(self, type, id, results=50, offset=0):
+        d = requests.get('{}/search/{}/?q={}&offset={}&limit={}&client_id={}'
+                         '&client_secret={}'.format(URL, type, id, offset,
+                                                    results, self.key,
+                                                    self.secret))
         return json.loads(d.content)
