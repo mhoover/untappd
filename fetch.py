@@ -3,26 +3,15 @@ import os
 import json
 import requests
 
-KEY = os.getenv('UNTAPPD_KEY')
-KEY_SECRET = os.getenv('UNTAPPD_SECRET')
+from classes import *
 
-class untappd(object):
-    URL = 'https://api.untappd.com/v4'
+# start crawl of data
+auth = untappd(KEY, KEY_SECRET)
 
-    def __init__(self, key, secret):
-        self.key = key
-        self.secret = secret
+# from user, grab total number of beers checked-in
+user = auth.get('user', 'info', 'hooverm2')
+tot_beers = user['response']['user']['stats']['total_beers']
 
+# use total number of beers to set up loop to grab all data
+# beers = auth.get('user', 'beers', 'hooverm2')
 
-    def get(self, type, info, id):
-        d = requests.get('{}/{}/{}/{}/?client_id={}&client_secret={}'
-                         .format(URL, type, info, id, self.key, self.secret))
-        return json.loads(d.content)
-
-
-    def search(self, type, id, results=50, offset=0):
-        d = requests.get('{}/search/{}/?q={}&offset={}&limit={}&client_id={}'
-                         '&client_secret={}'.format(URL, type, id, offset,
-                                                    results, self.key,
-                                                    self.secret))
-        return json.loads(d.content)
