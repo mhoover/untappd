@@ -28,7 +28,7 @@ class Untappd(object):
     def info(self, entity, action, identity, **kwargs):
         kwargs = self._add_keys(kwargs)
 
-        path = os.path.join(self.API_EP, entity, action, identity)
+        path = os.path.join(self.API_EP, entity, action, str(identity))
         d = requests.get(path, params=kwargs)
 
         return json.loads(d.content)
